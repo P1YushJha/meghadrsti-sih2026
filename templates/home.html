@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MeghaDrsti | Home</title>
+
+
+    <style>
+
+        /* =========================
+           BASIC RESET
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* =========================
+           BODY
+        ========================= */
+
+        body {
+
+            min-height: 100vh;
+
+            background: linear-gradient(
+                135deg,
+                #eaf6ff,
+                #d7ecff,
+                #eef8ff
+            );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================
+           MAIN SCREEN
+        ========================= */
+
+        .main-screen {
+
+            width: 100%;
+
+            height: 100vh;
+
+            position: relative;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 30px;
+        }
+
+
+        /* =========================
+           WEATHER BACKGROUND
+        ========================= */
+
+        .weather-bg {
+
+            position: absolute;
+
+            inset: 0;
+
+            overflow: hidden;
+
+            z-index: 0;
+        }
+
+
+        .sun {
+
+            position: absolute;
+
+            width: 180px;
+
+            height: 180px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 204, 70, 0.25);
+
+            top: 8%;
+
+            right: 8%;
+        }
+
+
+        .cloud-bg {
+
+            position: absolute;
+
+            font-size: 100px;
+
+            opacity: 0.15;
+        }
+
+
+        .cloud1 {
+
+            top: 12%;
+
+            left: 8%;
+        }
+
+
+        .cloud2 {
+
+            bottom: 12%;
+
+            right: 12%;
+
+            font-size: 130px;
+        }
+
+
+        .cloud3 {
+
+            bottom: 20%;
+
+            left: 5%;
+
+            font-size: 80px;
+        }
+
+
+        /* =========================
+           TOP HEADER
+        ========================= */
+
+        .top-header {
+
+            position: absolute;
+
+            top: 25px;
+
+            left: 40px;
+
+            right: 40px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            z-index: 5;
+        }
+
+
+        .logo {
+
+            color: #075bea;
+
+            font-size: 28px;
+
+            font-weight: bold;
+        }
+
+
+        .logo span {
+
+            color: #087cfb;
+        }
+
+
+        .header-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .weather-status {
+
+            background: rgba(255, 255, 255, 0.75);
+
+            padding: 9px 15px;
+
+            border-radius: 20px;
+
+            color: #075bea;
+
+            font-size: 13px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =========================
+           PROFILE BUTTON
+        ========================= */
+
+        .profile-menu-container {
+
+            position: relative;
+        }
+
+
+        .profile-btn {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            background: #087cfb;
+
+            color: white;
+
+            font-size: 18px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .profile-btn:hover {
+
+            background: #005bea;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================
+           PROFILE DROPDOWN
+        ========================= */
+
+        .profile-dropdown {
+
+            position: absolute;
+
+            top: 52px;
+
+            right: 0;
+
+            width: 180px;
+
+            background: rgba(255, 255, 255, 0.96);
+
+            border: 1px solid #e2edf8;
+
+            border-radius: 14px;
+
+            padding: 8px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 91, 186, 0.15);
+
+            display: none;
+
+            z-index: 100;
+        }
+
+
+        .profile-dropdown.show {
+
+            display: block;
+        }
+
+
+        .profile-dropdown button {
+
+            width: 100%;
+
+            border: none;
+
+            background: transparent;
+
+            padding: 12px 14px;
+
+            text-align: left;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            color: #26384d;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .profile-dropdown button:hover {
+
+            background: #eef6ff;
+
+            color: #075bea;
+        }
+
+
+        .profile-dropdown #logoutBtn:hover {
+
+            background: #fff0f0;
+
+            color: #e53935;
+        }
+
+
+        /* =========================
+           CHAT CONTAINER
+        ========================= */
+
+        .chat-container {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 80%;
+
+            max-width: 1000px;
+
+            height: 78vh;
+
+            background: rgba(255, 255, 255, 0.90);
+
+            border: 1px solid rgba(255, 255, 255, 0.8);
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 15px 45px rgba(0, 91, 186, 0.15);
+
+            backdrop-filter: blur(12px);
+
+            overflow: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        /* =========================
+           CHAT HEADER
+        ========================= */
+
+        .chat-header {
+
+            height: 70px;
+
+            padding: 0 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            border-bottom: 1px solid #e5edf5;
+
+            background: rgba(255, 255, 255, 0.8);
+
+            flex-shrink: 0;
+        }
+
+
+        .ai-icon {
+
+            width: 43px;
+
+            height: 43px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                #087cfb,
+                #005bea
+            );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: white;
+
+            font-size: 21px;
+
+            margin-right: 12px;
+        }
+
+
+        .ai-info h3 {
+
+            color: #075bea;
+
+            font-size: 17px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .ai-info p {
+
+            font-size: 12px;
+
+            color: #777;
+        }
+
+
+        .online-dot {
+
+            display: inline-block;
+
+            width: 7px;
+
+            height: 7px;
+
+            background: #22c55e;
+
+            border-radius: 50%;
+
+            margin-right: 4px;
+        }
+
+
+        /* =========================
+           CHAT AREA
+        ========================= */
+
+        .chat-area {
+
+            flex: 1;
+
+            padding: 25px;
+
+            overflow-y: auto;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 18px;
+        }
+
+
+        /* =========================
+           MESSAGE COMMON
+        ========================= */
+
+        .message {
+
+            max-width: 70%;
+
+            padding: 13px 17px;
+
+            border-radius: 17px;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            word-wrap: break-word;
+        }
+
+
+        /* =========================
+           AI MESSAGE
+        ========================= */
+
+        .ai-message {
+
+            align-self: flex-start;
+
+            background: #eef6ff;
+
+            color: #26384d;
+
+            border-bottom-left-radius: 5px;
+
+            border: 1px solid #dcecff;
+        }
+
+
+        /* =========================
+           USER MESSAGE
+        ========================= */
+
+        .user-message {
+
+            align-self: flex-end;
+
+            background: linear-gradient(
+                135deg,
+                #087cfb,
+                #005bea
+            );
+
+            color: white;
+
+            border-bottom-right-radius: 5px;
+        }
+
+
+        .message-label {
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            margin-bottom: 5px;
+
+            opacity: 0.7;
+        }
+
+
+        /* =========================
+           MESSAGE INPUT AREA
+        ========================= */
+
+        .message-container {
+
+            padding: 15px 20px;
+
+            border-top: 1px solid #e5edf5;
+
+            background: rgba(255, 255, 255, 0.9);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =========================
+           MIC BUTTON
+        ========================= */
+
+        .mic-btn {
+
+            width: 48px;
+
+            height: 48px;
+
+            flex-shrink: 0;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background: #eef6ff;
+
+            color: #087cfb;
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition: 0.3s;
+        }
+
+
+        .mic-btn:hover {
+
+            background: #dceeff;
+
+            transform: translateY(-2px);
+        }
+
+
+        .mic-btn:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* MIC LISTENING */
+
+        .mic-btn.listening {
+
+            background: #087cfb;
+
+            color: white;
+
+            animation: micPulse 1.2s infinite;
+        }
+
+
+        @keyframes micPulse {
+
+            0% {
+
+                box-shadow:
+                    0 0 0 0 rgba(8, 124, 251, 0.4);
+            }
+
+            70% {
+
+                box-shadow:
+                    0 0 0 12px rgba(8, 124, 251, 0);
+            }
+
+            100% {
+
+                box-shadow:
+                    0 0 0 0 rgba(8, 124, 251, 0);
+            }
+        }
+
+
+        /* =========================
+           MESSAGE INPUT
+        ========================= */
+
+        .message-input {
+
+            flex: 1;
+
+            min-height: 48px;
+
+            max-height: 110px;
+
+            resize: none;
+
+            border: 1px solid #d5dce5;
+
+            border-radius: 14px;
+
+            outline: none;
+
+            padding: 14px 16px;
+
+            font-size: 14px;
+
+            color: #333;
+
+            background: white;
+
+            transition: 0.3s;
+        }
+
+
+        .message-input:focus {
+
+            border-color: #087cfb;
+
+            box-shadow:
+                0 0 0 3px rgba(8, 124, 251, 0.1);
+        }
+
+
+        /* =========================
+           SEND BUTTON
+        ========================= */
+
+        .send-btn {
+
+            width: 48px;
+
+            height: 48px;
+
+            flex-shrink: 0;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background: #087cfb;
+
+            color: white;
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition: 0.3s;
+        }
+
+
+        .send-btn:hover {
+
+            background: #005bea;
+
+            transform: translateY(-2px);
+        }
+
+
+        .send-btn:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* =========================
+           SCROLLBAR
+        ========================= */
+
+        .chat-area::-webkit-scrollbar {
+
+            width: 6px;
+        }
+
+
+        .chat-area::-webkit-scrollbar-track {
+
+            background: transparent;
+        }
+
+
+        .chat-area::-webkit-scrollbar-thumb {
+
+            background: #b9d8f8;
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================
+           RESPONSIVE DESIGN
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .main-screen {
+
+                padding: 15px;
+            }
+
+
+            .chat-container {
+
+                width: 95%;
+
+                height: 82vh;
+
+                border-radius: 18px;
+            }
+
+
+            .top-header {
+
+                left: 20px;
+
+                right: 20px;
+            }
+
+
+            .logo {
+
+                font-size: 23px;
+            }
+
+
+            .weather-status {
+
+                display: none;
+            }
+
+
+            .message {
+
+                max-width: 82%;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .chat-container {
+
+                width: 100%;
+
+                height: 85vh;
+            }
+
+
+            .chat-area {
+
+                padding: 15px;
+            }
+
+
+            .message {
+
+                max-width: 88%;
+            }
+
+
+            .chat-header {
+
+                padding: 0 15px;
+            }
+
+
+            .message-container {
+
+                padding: 10px;
+
+                gap: 7px;
+            }
+
+
+            .mic-btn,
+            .send-btn {
+
+                width: 44px;
+
+                height: 44px;
+
+                border-radius: 12px;
+            }
+
+
+            .message-input {
+
+                min-height: 44px;
+
+                padding: 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         MAIN HOME SCREEN
+    ================================== -->
+
+    <div class="main-screen">
+
+
+        <!-- WEATHER BACKGROUND -->
+
+        <div class="weather-bg">
+
+            <div class="sun"></div>
+
+            <div class="cloud-bg cloud1">
+                ☁️
+            </div>
+
+            <div class="cloud-bg cloud2">
+                ☁️
+            </div>
+
+            <div class="cloud-bg cloud3">
+                ☁️
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             TOP HEADER
+        ================================== -->
+
+        <div class="top-header">
+
+
+            <div class="logo">
+
+                Megha<span>Drsti</span>
+
+            </div>
+
+
+            <div class="header-right">
+
+
+                <div class="weather-status">
+
+                    🌤️ Weather AI
+
+                </div>
+
+
+                <!-- PROFILE MENU -->
+
+                <div class="profile-menu-container">
+
+
+                    <button
+                        class="profile-btn"
+                        id="profileBtn">
+
+                        👤
+
+                    </button>
+
+
+                    <div
+                        class="profile-dropdown"
+                        id="profileDropdown">
+
+
+                        <button id="myProfileBtn">
+
+                            👤 My Profile
+
+                        </button>
+
+
+                        <button id="logoutBtn">
+
+                            🚪 Logout
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             CHAT SCREEN
+        ================================== -->
+
+        <div class="chat-container">
+
+
+            <!-- CHAT HEADER -->
+
+            <div class="chat-header">
+
+
+                <div class="ai-icon">
+
+                    ☁️
+
+                </div>
+
+
+                <div class="ai-info">
+
+                    <h3>
+
+                        MeghaDrsti AI
+
+                    </h3>
+
+
+                    <p>
+
+                        <span class="online-dot"></span>
+
+                        Online • Weather Assistant
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================
+                 CHAT AREA
+            ================================== -->
+
+            <div
+                class="chat-area"
+                id="chatArea">
+
+
+                <!-- AI MESSAGE -->
+
+                <div class="message ai-message">
+
+                    <div class="message-label">
+
+                        MeghaDrsti AI
+
+                    </div>
+
+
+                    Hello! 👋
+
+                    I'm MeghaDrsti, your AI weather assistant.
+
+                    Ask me anything about the weather, forecasts,
+
+                    temperature, rain, wind or clouds. 🌦️
+
+                </div>
+
+
+                <!-- USER MESSAGE -->
+
+                <div class="message user-message">
+
+                    <div class="message-label">
+
+                        You
+
+                    </div>
+
+
+                    What's the weather like today?
+
+                </div>
+
+
+                <!-- AI RESPONSE -->
+
+                <div class="message ai-message">
+
+                    <div class="message-label">
+
+                        MeghaDrsti AI
+
+                    </div>
+
+
+                    I can help you with that! 🌤️
+
+                    Once your location is available, I can provide
+
+                    the current weather and forecast for your area.
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================
+                 MESSAGE INPUT
+            ================================== -->
+
+            <form
+                class="message-container"
+                id="messageForm">
+
+
+                <!-- MICROPHONE -->
+
+                <button
+                    type="button"
+                    class="mic-btn"
+                    id="micBtn"
+                    title="Voice input">
+
+                    🎤
+
+                </button>
+
+
+                <!-- TEXT INPUT -->
+
+                <textarea
+                    class="message-input"
+                    id="messageInput"
+                    placeholder="Ask MeghaDrsti anything about the weather..."
+                    rows="1"
+                    required></textarea>
+
+
+                <!-- SEND -->
+
+                <button
+                    type="submit"
+                    class="send-btn"
+                    title="Send message">
+
+                    ➤
+
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =================================
+         JAVASCRIPT
+    ================================== -->
+
+    <script>
+
+
+        /* =========================
+           CHAT ELEMENTS
+        ========================= */
+
+        const messageForm =
+            document.getElementById("messageForm");
+
+
+        const messageInput =
+            document.getElementById("messageInput");
+
+
+        const chatArea =
+            document.getElementById("chatArea");
+
+
+        /* =========================
+           SEND MESSAGE
+        ========================= */
+
+        messageForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const message =
+                    messageInput.value.trim();
+
+
+                if (message === "") {
+
+                    return;
+
+                }
+
+
+                /* =========================
+                   ADD USER MESSAGE
+                ========================= */
+
+                const userMessage =
+                    document.createElement("div");
+
+
+                userMessage.className =
+                    "message user-message";
+
+
+                userMessage.innerHTML = `
+
+                    <div class="message-label">
+
+                        You
+
+                    </div>
+
+                    ${message}
+
+                `;
+
+
+                chatArea.appendChild(
+                    userMessage
+                );
+
+
+                /* CLEAR INPUT */
+
+                messageInput.value = "";
+
+
+                /* SCROLL DOWN */
+
+                chatArea.scrollTop =
+                    chatArea.scrollHeight;
+
+
+                /* =========================
+                   TEMPORARY AI RESPONSE
+                ========================= */
+
+                setTimeout(
+                    function () {
+
+
+                        const aiMessage =
+                            document.createElement("div");
+
+
+                        aiMessage.className =
+                            "message ai-message";
+
+                        {% comment %} Dummy Messages {% endcomment %}
+
+                        const question1 = `What is the weather today?`;
+                        const response1 = `Today in Dhanbad, it is 28°C with partly cloudy skies. There is a 30% chance of rain.`;
+
+                        const question2 = `Is it raining now?`;
+                        const response2 = `No, it is currently not raining. There is a 20% chance of rain in the next hour.`;
+                        
+                        const question3 = `Should i carry an umbrella?`;
+                        const response3 = `An umbrella would be useful today because rain is likely in the afternoon.`;
+
+                        if (message === question1) {
+
+                            aiMessage.innerHTML = `
+
+                            <div class="message-label">
+
+                                MeghaDrsti AI
+
+                            </div>
+
+
+                            ${response1}
+
+                        `;
+                            
+                        } else if (message === question2) {
+                        aiMessage.innerHTML = `
+
+                            <div class="message-label">
+
+                                MeghaDrsti AI
+
+                            </div>
+
+
+                            ${response2}
+
+                        `;
+                        } else if (message === question3) {
+                            aiMessage.innerHTML = `
+
+                                <div class="message-label">
+
+                                    MeghaDrsti AI
+
+                                </div>
+
+
+                                ${response3}
+
+                            `;
+                        }
+                        else {
+                                aiMessage.innerHTML = `
+
+                                <div class="message-label">
+
+                                    MeghaDrsti AI
+
+                                </div>
+
+
+                                I'm processing your question. 🤖🌦️
+
+                                The real weather AI response will be
+
+                                connected later.
+
+                            `;
+
+                        }
+
+                        chatArea.appendChild(
+                            aiMessage
+                        );
+
+
+                        chatArea.scrollTop =
+                            chatArea.scrollHeight;
+
+
+                    },
+                    700
+                );
+
+            }
+        );
+
+
+        /* =========================
+           ENTER TO SEND
+        ========================= */
+
+        messageInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter" &&
+                    !event.shiftKey
+                ) {
+
+                    event.preventDefault();
+
+
+                    messageForm.dispatchEvent(
+                        new Event("submit")
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           PROFILE MENU
+        ========================= */
+
+        const profileBtn =
+            document.getElementById(
+                "profileBtn"
+            );
+
+
+        const profileDropdown =
+            document.getElementById(
+                "profileDropdown"
+            );
+
+
+        const myProfileBtn =
+            document.getElementById(
+                "myProfileBtn"
+            );
+
+
+        const logoutBtn =
+            document.getElementById(
+                "logoutBtn"
+            );
+
+
+        /* OPEN PROFILE MENU */
+
+        profileBtn.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                profileDropdown.classList.toggle(
+                    "show"
+                );
+
+            }
+        );
+
+
+        /* MY PROFILE */
+
+        myProfileBtn.addEventListener(
+            "click",
+            function () {
+
+                window.location.href = "http://127.0.0.1:8000/profile/";
+
+            }
+        );
+
+
+        /* LOGOUT */
+
+        logoutBtn.addEventListener(
+            "click",
+            function () {
+
+                const confirmLogout =
+                    confirm(
+                        "Are you sure you want to logout?"
+                    );
+
+
+                if (confirmLogout) {
+
+                    window.location.href = "/logout";
+
+                }
+
+            }
+        );
+
+
+        /* CLOSE DROPDOWN */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    !event.target.closest(
+                        ".profile-menu-container"
+                    )
+                ) {
+
+                    profileDropdown.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================
+           VOICE INPUT
+        ========================= */
+
+        const micBtn =
+            document.getElementById(
+                "micBtn"
+            );
+
+
+        const SpeechRecognition =
+            window.SpeechRecognition ||
+            window.webkitSpeechRecognition;
+
+
+        if (SpeechRecognition) {
+
+
+            const recognition =
+                new SpeechRecognition();
+
+
+            recognition.continuous = false;
+
+
+            recognition.interimResults = false;
+
+
+            /* English (India) */
+
+            recognition.lang = "en-IN";
+
+
+            /* =========================
+               MICROPHONE CLICK
+            ========================= */
+
+            micBtn.addEventListener(
+                "click",
+                function () {
+
+                    try {
+
+                        recognition.start();
+
+
+                        micBtn.classList.add(
+                            "listening"
+                        );
+
+
+                        micBtn.innerHTML =
+                            "🔴";
+
+
+                        micBtn.title =
+                            "Listening...";
+
+
+                    }
+                    catch (error) {
+
+                        console.log(
+                            "Microphone is already active."
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /* =========================
+               SPEECH RESULT
+            ========================= */
+
+            recognition.addEventListener(
+                "result",
+                function (event) {
+
+
+                    const transcript =
+                        event.results[0][0]
+                            .transcript;
+
+
+                    messageInput.value =
+                        transcript;
+
+
+                    messageInput.focus();
+
+                }
+            );
+
+
+            /* =========================
+               SPEECH END
+            ========================= */
+
+            recognition.addEventListener(
+                "end",
+                function () {
+
+
+                    micBtn.classList.remove(
+                        "listening"
+                    );
+
+
+                    micBtn.innerHTML =
+                        "🎤";
+
+
+                    micBtn.title =
+                        "Voice input";
+
+                }
+            );
+
+
+            /* =========================
+               SPEECH ERROR
+            ========================= */
+
+            recognition.addEventListener(
+                "error",
+                function (event) {
+
+
+                    console.log(
+                        "Speech recognition error:",
+                        event.error
+                    );
+
+
+                    micBtn.classList.remove(
+                        "listening"
+                    );
+
+
+                    micBtn.innerHTML =
+                        "🎤";
+
+
+                    micBtn.title =
+                        "Voice input";
+
+                }
+            );
+
+
+        }
+        else {
+
+
+            /* =========================
+               BROWSER NOT SUPPORTED
+            ========================= */
+
+            micBtn.addEventListener(
+                "click",
+                function () {
+
+                    alert(
+                        "Voice input is not supported in this browser."
+                    );
+
+                }
+            );
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

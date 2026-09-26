@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeghaDrsti | Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #eef6ff;
+        }
+
+        .container {
+            width: 900px;
+            min-height: 520px;
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        /* LEFT SIDE */
+
+        .left-section {
+            width: 45%;
+            background: linear-gradient(135deg, #087cfb, #005bea);
+            color: white;
+            padding: 50px 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cloud {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .brand {
+            font-size: 38px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .tagline {
+            font-size: 17px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .weather-icons {
+            margin-top: 35px;
+            font-size: 30px;
+            letter-spacing: 12px;
+        }
+
+        /* RIGHT SIDE */
+
+        .right-section {
+            width: 55%;
+            padding: 45px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right-section h2 {
+            color: #075bea;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d5dce5;
+            border-radius: 9px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #087cfb;
+            box-shadow: 0 0 0 3px rgba(8, 124, 251, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #087cfb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #005bea;
+            transform: translateY(-1px);
+        }
+
+        .signup-text {
+            text-align: center;
+            margin-top: 22px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .signup-text a {
+            color: #087cfb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 750px) {
+
+            .container {
+                width: 95%;
+                flex-direction: column;
+            }
+
+            .left-section,
+            .right-section {
+                width: 100%;
+            }
+
+            .left-section {
+                padding: 35px 20px;
+            }
+
+            .right-section {
+                padding: 35px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LEFT SECTION -->
+        <div class="left-section">
+
+            <div class="cloud">☁️</div>
+
+            <div class="brand">
+                MeghaDrsti
+            </div>
+
+            <div class="tagline">
+                Your Weather. Your Conversation.
+                <br>
+                Welcome back to your weather assistant.
+            </div>
+
+            <div class="weather-icons">
+                ☀️ ☁️ 🌧️
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SECTION -->
+        <div class="right-section">
+
+            <h2>Welcome Back</h2>
+
+            <p class="subtitle">
+                Login to continue using MeghaDrsti.
+            </p>
+
+
+            <form id="loginForm" method="POST" action="">
+
+                {% csrf_token %}
+
+                <!-- EMAIL OR MOBILE -->
+
+                <div class="input-group">
+
+                    <label for="loginId">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="loginId"
+                        placeholder="Enter username"
+                        name="username"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-btn">
+                    Login
+                </button>
+
+            </form>
+
+
+            <div class="signup-text">
+
+                Don't have an account?
+                <a href="{% url 'signup' %}">Sign Up</a>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

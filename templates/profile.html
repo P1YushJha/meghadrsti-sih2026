@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | MeghaDrsti</title>
+
+
+    <style>
+
+        /* =========================
+           BASIC RESET
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* =========================
+           BODY
+        ========================= */
+
+        body {
+
+            min-height: 100vh;
+
+            background: linear-gradient(
+                135deg,
+                #eaf6ff,
+                #d7ecff,
+                #eef8ff
+            );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           MAIN SCREEN
+        ========================= */
+
+        .main-screen {
+
+            width: 100%;
+            min-height: 100vh;
+
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 30px;
+        }
+
+
+        /* =========================
+           WEATHER BACKGROUND
+        ========================= */
+
+        .weather-bg {
+
+            position: fixed;
+
+            inset: 0;
+
+            overflow: hidden;
+
+            z-index: 0;
+
+            pointer-events: none;
+        }
+
+
+        /* CLOUDS */
+
+        .cloud-bg {
+
+            position: absolute;
+
+            font-size: 100px;
+
+            opacity: 0.15;
+
+            user-select: none;
+        }
+
+
+        .cloud-one {
+
+            top: 10%;
+
+            left: 7%;
+        }
+
+
+        .cloud-two {
+
+            bottom: 12%;
+
+            right: 8%;
+
+            font-size: 130px;
+        }
+
+
+        .cloud-three {
+
+            bottom: 20%;
+
+            left: 4%;
+
+            font-size: 80px;
+        }
+
+
+        /* =========================
+           TOP HEADER
+        ========================= */
+
+        .top-header {
+
+            position: absolute;
+
+            top: 25px;
+
+            left: 40px;
+
+            right: 40px;
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            z-index: 10;
+        }
+
+
+        /* HOME BUTTON */
+
+        .home-btn {
+
+            border: none;
+
+            background: rgba(255, 255, 255, 0.85);
+
+            color: #075bea;
+
+            padding: 10px 18px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow: 0 4px 15px rgba(0, 91, 186, 0.10);
+
+            transition: 0.3s;
+        }
+
+
+        .home-btn:hover {
+
+            background: #087cfb;
+
+            color: white;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================
+           PROFILE CARD
+        ========================= */
+
+        .profile-card {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 100%;
+
+            max-width: 650px;
+
+            background: rgba(255, 255, 255, 0.90);
+
+            border: 1px solid rgba(255, 255, 255, 0.85);
+
+            border-radius: 28px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 15px 45px rgba(0, 91, 186, 0.15);
+
+            backdrop-filter: blur(12px);
+
+            text-align: center;
+        }
+
+
+        /* =========================
+           PROFILE IMAGE
+        ========================= */
+
+        .profile-image-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+
+        .profile-image {
+
+            width: 180px;
+
+            height: 180px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 5px solid white;
+
+            box-shadow:
+                0 8px 25px rgba(0, 91, 186, 0.18);
+
+            background: #eaf6ff;
+        }
+
+
+        /* =========================
+           PROFILE NAME
+        ========================= */
+
+        .profile-name {
+
+            color: #075bea;
+
+            font-size: 26px;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+        }
+
+
+        .profile-type {
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           CHANGE PROFILE BUTTON
+        ========================= */
+
+        .change-photo-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            background: #087cfb;
+
+            color: white;
+
+            border: none;
+
+            padding: 11px 20px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+            margin-bottom: 30px;
+        }
+
+
+        .change-photo-btn:hover {
+
+            background: #005bea;
+
+            transform: translateY(-2px);
+        }
+
+
+        .change-photo-btn:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* Hide actual file input */
+
+        #profileUpload {
+
+            display: none;
+        }
+
+
+        /* =========================
+           INFORMATION SECTION
+        ========================= */
+
+        .profile-info {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+
+            text-align: left;
+        }
+
+
+        /* =========================
+           INFO ROW
+        ========================= */
+
+        .info-row {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 16px;
+
+            background: #f7fbff;
+
+            border: 1px solid #e4f0fb;
+
+            border-radius: 15px;
+
+            transition: 0.25s;
+        }
+
+
+        .info-row:hover {
+
+            background: #eef7ff;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* ICON */
+
+        .info-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+
+            background: #e9f4ff;
+
+            color: #087cfb;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 18px;
+        }
+
+
+        /* INFO TEXT */
+
+        .info-content {
+
+            flex: 1;
+
+            min-width: 0;
+        }
+
+
+        .info-label {
+
+            display: block;
+
+            color: #7a8795;
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .info-value {
+
+            color: #26384d;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           RESPONSIVE DESIGN
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .main-screen {
+
+                padding: 25px 15px;
+            }
+
+
+            .top-header {
+
+                top: 20px;
+
+                left: 20px;
+
+                right: 20px;
+            }
+
+
+            .profile-card {
+
+                max-width: 600px;
+
+                padding: 35px 25px;
+
+                margin-top: 40px;
+            }
+
+
+            .profile-image {
+
+                width: 165px;
+
+                height: 165px;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            body {
+
+                align-items: flex-start;
+            }
+
+
+            .main-screen {
+
+                padding: 20px 12px 30px;
+            }
+
+
+            .top-header {
+
+                top: 15px;
+
+                left: 15px;
+
+                right: 15px;
+            }
+
+
+            .home-btn {
+
+                padding: 9px 14px;
+
+                font-size: 13px;
+            }
+
+
+            .profile-card {
+
+                margin-top: 65px;
+
+                padding: 28px 18px;
+
+                border-radius: 22px;
+            }
+
+
+            .profile-image {
+
+                width: 150px;
+
+                height: 150px;
+            }
+
+
+            .profile-name {
+
+                font-size: 23px;
+            }
+
+
+            .change-photo-btn {
+
+                width: 100%;
+
+                max-width: 230px;
+            }
+
+
+            .info-row {
+
+                padding: 13px;
+
+                gap: 12px;
+            }
+
+
+            .info-icon {
+
+                width: 38px;
+
+                height: 38px;
+
+                font-size: 16px;
+            }
+        }
+
+
+        @media (max-width: 360px) {
+
+            .profile-card {
+
+                padding: 25px 14px;
+            }
+
+
+            .profile-image {
+
+                width: 135px;
+
+                height: 135px;
+            }
+
+
+            .profile-name {
+
+                font-size: 21px;
+            }
+
+
+            .info-value {
+
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         MAIN SCREEN
+    ========================= -->
+
+    <div class="main-screen">
+
+
+        <!-- =========================
+             WEATHER BACKGROUND
+        ========================= -->
+
+        <div class="weather-bg">
+
+            <div class="cloud-bg cloud-one">
+                ☁️
+            </div>
+
+            <div class="cloud-bg cloud-two">
+                ☁️
+            </div>
+
+            <div class="cloud-bg cloud-three">
+                ☁️
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             TOP HEADER
+        ========================= -->
+
+        <div class="top-header">
+
+            <button
+                class="home-btn"
+                id="homeBtn">
+
+                ← Home
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             PROFILE CARD
+        ========================= -->
+
+        <div class="profile-card">
+
+
+            <!-- PROFILE IMAGE -->
+
+            <div class="profile-image-container">
+
+                <img
+                    src=""
+                    id="profileImage"
+                    class="profile-image"
+                    alt="Profile Picture">
+
+            </div>
+
+
+            <!-- PROFILE NAME -->
+
+            <h1 class="profile-name">
+                {{ request.user.username }}
+            </h1>
+
+
+            <p class="profile-type">
+                MeghaDrsti User
+            </p>
+
+
+            <!-- CHANGE PROFILE PICTURE -->
+
+            <input
+                type="file"
+                id="profileUpload"
+                accept="image/*">
+
+
+            <button
+                class="change-photo-btn"
+                id="changePhotoBtn">
+
+                📷 Change Profile Picture
+
+            </button>
+
+
+            <!-- =========================
+                 PROFILE INFORMATION
+            ========================= -->
+
+            <div class="profile-info">
+
+
+                <!-- EMAIL -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        ✉️
+                    </div>
+
+                    <div class="info-content">
+
+                        <span class="info-label">
+                            Email
+                        </span>
+
+                        <span class="info-value">
+                            {{ request.user.email }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOCATION -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        📍
+                    </div>
+
+                    <div class="info-content">
+
+                        <span class="info-label">
+                            Location
+                        </span>
+
+                        <span class="info-value">
+                            Jharkhand, India
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LANGUAGE -->
+
+                <div class="info-row">
+
+                    <div class="info-icon">
+                        🌐
+                    </div>
+
+                    <div class="info-content">
+
+                        <span class="info-label">
+                            Language
+                        </span>
+
+                        <span class="info-value">
+                            English
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        /* =========================
+           DEFAULT PROFILE IMAGE
+        ========================= */
+
+        const defaultProfileImage =
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' rx='100' fill='%23eaf6ff'/%3E%3Ccircle cx='100' cy='78' r='38' fill='%23087cfb'/%3E%3Cpath d='M35 175c8-43 35-65 65-65s57 22 65 65' fill='%23087cfb'/%3E%3C/svg%3E";
+
+
+        /* =========================
+           GET ELEMENTS
+        ========================= */
+
+        const profileImage =
+            document.getElementById("profileImage");
+
+        const profileUpload =
+            document.getElementById("profileUpload");
+
+        const changePhotoBtn =
+            document.getElementById("changePhotoBtn");
+
+        const homeBtn =
+            document.getElementById("homeBtn");
+
+
+        /* =========================
+           LOAD SAVED PROFILE IMAGE
+        ========================= */
+
+        const savedProfileImage =
+            localStorage.getItem("meghaDrstiProfileImage");
+
+
+        if (savedProfileImage) {
+
+            profileImage.src = savedProfileImage;
+
+        } else {
+
+            profileImage.src = defaultProfileImage;
+
+        }
+
+
+        /* =========================
+           CHANGE PROFILE PICTURE
+        ========================= */
+
+        changePhotoBtn.addEventListener(
+            "click",
+            function() {
+
+                profileUpload.click();
+
+            }
+        );
+
+
+        /* =========================
+           IMAGE UPLOAD
+        ========================= */
+
+        profileUpload.addEventListener(
+            "change",
+            function(event) {
+
+                const file =
+                    event.target.files[0];
+
+
+                /* Check whether a file was selected */
+
+                if (!file) {
+                    return;
+                }
+
+
+                /* Check image type */
+
+                if (!file.type.startsWith("image/")) {
+
+                    alert("Please select an image file.");
+
+                    return;
+                }
+
+
+                /* Read image */
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function(e) {
+
+                        const imageData =
+                            e.target.result;
+
+
+                        /* Show uploaded image */
+
+                        profileImage.src =
+                            imageData;
+
+
+                        /* Save image */
+
+                        localStorage.setItem(
+                            "meghaDrstiProfileImage",
+                            imageData
+                        );
+
+                    };
+
+
+                reader.readAsDataURL(file);
+
+            }
+        );
+
+
+        /* =========================
+           IMAGE ERROR
+        ========================= */
+
+        profileImage.onerror =
+            function() {
+
+                profileImage.src =
+                    defaultProfileImage;
+
+            };
+
+
+        /* =========================
+           HOME BUTTON
+        ========================= */
+
+        homeBtn.addEventListener(
+            "click",
+            function() {
+
+                window.location.href =
+                    "/home";
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>
