@@ -1,0 +1,3054 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Meghdrsti | Weather & Disaster Alert
+    </title>
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f5f9ff;
+
+            color: #17233c;
+
+            line-height: 1.6;
+
+            overflow-x: hidden;
+        }
+
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           PAGE LOADER
+        ===================================================== */
+
+        .page-loader {
+            position: fixed;
+
+            inset: 0;
+
+            background: #ffffff;
+
+            z-index: 99999;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            animation:
+                loaderHide 1s ease
+                forwards;
+
+            animation-delay: 1.5s;
+        }
+
+
+        .loader-content {
+            text-align: center;
+        }
+
+
+        .loader-icon {
+            font-size: 55px;
+
+            display: inline-block;
+
+            animation:
+                loaderWeather 1s ease-in-out
+                infinite;
+        }
+
+
+        .loader-text {
+            margin-top: 12px;
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            color: #1769e0;
+
+            letter-spacing: 1px;
+        }
+
+
+        .loader-line {
+            width: 100px;
+
+            height: 4px;
+
+            margin: 15px auto 0;
+
+            border-radius: 20px;
+
+            background: #e4efff;
+
+            overflow: hidden;
+        }
+
+
+        .loader-line::after {
+            content: "";
+
+            display: block;
+
+            width: 45%;
+
+            height: 100%;
+
+            background: #1769e0;
+
+            border-radius: 20px;
+
+            animation:
+                loaderLine 1s ease-in-out
+                infinite;
+        }
+
+
+        @keyframes loaderWeather {
+
+            0% {
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-10px)
+                    rotate(8deg);
+            }
+
+            100% {
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+            }
+        }
+
+
+        @keyframes loaderLine {
+
+            0% {
+                transform:
+                    translateX(-100%);
+            }
+
+            100% {
+                transform:
+                    translateX(250%);
+            }
+        }
+
+
+        @keyframes loaderHide {
+
+            0% {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+
+        /* =====================================================
+           ANIMATED BACKGROUND
+        ===================================================== */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            width: 450px;
+            height: 450px;
+
+            top: -180px;
+            left: -150px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(23, 105, 224, 0.09),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+
+            z-index: -1;
+
+            animation:
+                backgroundFloat 9s ease-in-out
+                infinite;
+        }
+
+
+        body::after {
+            content: "";
+
+            position: fixed;
+
+            width: 400px;
+            height: 400px;
+
+            right: -150px;
+            bottom: -150px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(92, 180, 255, 0.08),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+
+            z-index: -1;
+
+            animation:
+                backgroundFloat2 11s ease-in-out
+                infinite;
+        }
+
+
+        @keyframes backgroundFloat {
+
+            0% {
+                transform:
+                    translate(0, 0);
+            }
+
+            50% {
+                transform:
+                    translate(50px, 40px);
+            }
+
+            100% {
+                transform:
+                    translate(0, 0);
+            }
+        }
+
+
+        @keyframes backgroundFloat2 {
+
+            0% {
+                transform:
+                    translate(0, 0);
+            }
+
+            50% {
+                transform:
+                    translate(-40px, -30px);
+            }
+
+            100% {
+                transform:
+                    translate(0, 0);
+            }
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            width: 100%;
+
+            height: 75px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 8%;
+
+            background:
+                rgba(255, 255, 255, 0.92);
+
+            border-bottom:
+                1px solid #e6edf7;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            backdrop-filter:
+                blur(15px);
+
+            animation:
+                navSlide 0.8s ease
+                both;
+        }
+
+
+        @keyframes navSlide {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(-100%);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        /* LOGO */
+
+        .logo {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: 24px;
+
+            font-weight: 700;
+
+            color: #1769e0;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.3s ease;
+        }
+
+
+        .logo:hover {
+            transform:
+                scale(1.05);
+        }
+
+
+        .logo span {
+            color: #17233c;
+        }
+
+
+        /* NAVIGATION */
+
+        .navbar nav {
+            display: flex;
+
+            align-items: center;
+
+            gap: 35px;
+        }
+
+
+        .navbar nav a {
+            color: #536174;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            position: relative;
+
+            transition:
+                color 0.3s ease,
+                transform 0.3s ease;
+        }
+
+
+        .navbar nav a:hover {
+            color: #1769e0;
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .navbar nav a.active {
+            color: #1769e0;
+        }
+
+
+        .navbar nav a.active::after {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            bottom: -8px;
+
+            width: 100%;
+
+            height: 2px;
+
+            background: #1769e0;
+
+            transform-origin: left;
+
+            animation:
+                navUnderline 0.5s ease;
+        }
+
+
+        @keyframes navUnderline {
+
+            from {
+                transform:
+                    scaleX(0);
+            }
+
+            to {
+                transform:
+                    scaleX(1);
+            }
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            min-height: 650px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 80px 8%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf6ff,
+                    #ffffff
+                );
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        /* HERO LIGHT */
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            right: 10%;
+
+            top: 10%;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(23, 105, 224, 0.07),
+                    transparent 70%
+                );
+
+            animation:
+                heroGlow 6s ease-in-out
+                infinite;
+
+            pointer-events: none;
+        }
+
+
+        @keyframes heroGlow {
+
+            0% {
+                transform:
+                    scale(0.9);
+
+                opacity: 0.5;
+            }
+
+            50% {
+                transform:
+                    scale(1.2);
+
+                opacity: 1;
+            }
+
+            100% {
+                transform:
+                    scale(0.9);
+
+                opacity: 0.5;
+            }
+        }
+
+
+        .hero-content {
+            width: 100%;
+
+            max-width: 1250px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                1.1fr 0.9fr;
+
+            gap: 70px;
+
+            align-items: center;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           HERO TEXT
+        ===================================================== */
+
+        .hero-text {
+            animation:
+                heroText 1s ease
+                0.2s both;
+        }
+
+
+        @keyframes heroText {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateX(-60px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateX(0);
+            }
+        }
+
+
+        .tagline {
+            color: #1769e0;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 18px;
+
+            animation:
+                fadeUp 0.8s ease
+                0.4s both;
+        }
+
+
+        .hero-text h1 {
+            font-size: 56px;
+
+            line-height: 1.1;
+
+            color: #13213a;
+
+            margin-bottom: 25px;
+
+            animation:
+                fadeUp 0.8s ease
+                0.5s both;
+        }
+
+
+        .hero-text h1 span {
+            display: block;
+
+            color: #1769e0;
+
+            animation:
+                textGlow 3s ease-in-out
+                infinite;
+        }
+
+
+        @keyframes textGlow {
+
+            0% {
+                text-shadow:
+                    0 0 0
+                    rgba(23, 105, 224, 0);
+            }
+
+            50% {
+                text-shadow:
+                    0 0 20px
+                    rgba(23, 105, 224, 0.15);
+            }
+
+            100% {
+                text-shadow:
+                    0 0 0
+                    rgba(23, 105, 224, 0);
+            }
+        }
+
+
+        .description {
+            max-width: 600px;
+
+            font-size: 17px;
+
+            color: #64748b;
+
+            margin-bottom: 35px;
+
+            animation:
+                fadeUp 0.8s ease
+                0.6s both;
+        }
+
+
+        @keyframes fadeUp {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .hero-buttons {
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            animation:
+                fadeUp 0.8s ease
+                0.7s both;
+        }
+
+
+        .btn {
+            display: inline-flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 13px 25px;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                background 0.3s ease;
+        }
+
+
+        .primary-btn {
+            color: #ffffff;
+
+            background: #1769e0;
+
+            box-shadow:
+                0 8px 20px
+                rgba(23, 105, 224, 0.2);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        /* Button shine */
+
+        .primary-btn::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: -120%;
+
+            width: 80%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.3),
+                    transparent
+                );
+
+            transform:
+                skewX(-20deg);
+
+            transition:
+                left 0.6s ease;
+        }
+
+
+        .primary-btn:hover::before {
+            left: 130%;
+        }
+
+
+        .primary-btn:hover {
+            background: #0d55bd;
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 14px 30px
+                rgba(23, 105, 224, 0.3);
+        }
+
+
+        .secondary-btn {
+            color: #1769e0;
+
+            background: #ffffff;
+
+            border:
+                1px solid #cbd9ee;
+        }
+
+
+        .secondary-btn:hover {
+            background: #edf5ff;
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(23, 105, 224, 0.12);
+        }
+
+
+        /* =====================================================
+           WEATHER PREVIEW
+        ===================================================== */
+
+        .weather-preview {
+            display: flex;
+
+            justify-content: center;
+
+            animation:
+                weatherCardEntrance 1s ease
+                0.3s both;
+        }
+
+
+        @keyframes weatherCardEntrance {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateX(60px)
+                    scale(0.92);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateX(0)
+                    scale(1);
+            }
+        }
+
+
+        /* =====================================================
+           WEATHER CARD
+        ===================================================== */
+
+        .weather-card {
+            width: 380px;
+
+            min-height: 485px;
+
+            padding: 30px;
+
+            border-radius: 25px;
+
+            background:
+                rgba(255, 255, 255, 0.96);
+
+            box-shadow:
+                0 25px 60px
+                rgba(37, 82, 140, 0.15);
+
+            border:
+                1px solid #e7eef8;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition:
+                transform 0.5s ease,
+                box-shadow 0.5s ease;
+        }
+
+
+        .weather-card:hover {
+            transform:
+                translateY(-10px)
+                rotateX(2deg);
+
+            box-shadow:
+                0 35px 75px
+                rgba(37, 82, 140, 0.22);
+        }
+
+
+        /* =====================================================
+           WEATHER ANIMATION
+        ===================================================== */
+
+        .weather-effect {
+            position: absolute;
+
+            inset: 0;
+
+            overflow: hidden;
+
+            pointer-events: none;
+
+            z-index: 1;
+        }
+
+
+        /* SUN */
+
+        .sun-effect {
+            position: absolute;
+
+            width: 190px;
+
+            height: 190px;
+
+            top: -75px;
+
+            right: -50px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255, 193, 45, 0.3),
+                    rgba(255, 193, 45, 0.08),
+                    transparent 70%
+                );
+
+            filter: blur(5px);
+
+            animation:
+                sunGlow 4s ease-in-out
+                infinite;
+        }
+
+
+        @keyframes sunGlow {
+
+            0% {
+                transform:
+                    scale(0.95);
+
+                opacity: 0.45;
+            }
+
+            50% {
+                transform:
+                    scale(1.12);
+
+                opacity: 0.85;
+            }
+
+            100% {
+                transform:
+                    scale(0.95);
+
+                opacity: 0.45;
+            }
+        }
+
+
+        /* CLOUDS */
+
+        .floating-cloud {
+            position: absolute;
+
+            width: 100px;
+
+            height: 35px;
+
+            background:
+                rgba(205, 219, 244, 0.38);
+
+            border-radius: 50px;
+
+            filter: blur(1px);
+
+            opacity: 0.55;
+        }
+
+
+        .floating-cloud::before,
+        .floating-cloud::after {
+            content: "";
+
+            position: absolute;
+
+            background: inherit;
+
+            border-radius: 50%;
+        }
+
+
+        .floating-cloud::before {
+            width: 45px;
+
+            height: 45px;
+
+            left: 15px;
+
+            bottom: 8px;
+        }
+
+
+        .floating-cloud::after {
+            width: 55px;
+
+            height: 55px;
+
+            right: 15px;
+
+            bottom: 5px;
+        }
+
+
+        .cloud-one {
+            top: 110px;
+
+            left: -130px;
+
+            animation:
+                cloudMove 14s linear
+                infinite;
+        }
+
+
+        .cloud-two {
+            top: 200px;
+
+            left: -160px;
+
+            width: 75px;
+
+            height: 28px;
+
+            opacity: 0.3;
+
+            animation:
+                cloudMove 19s linear
+                infinite;
+
+            animation-delay: 4s;
+        }
+
+
+        @keyframes cloudMove {
+
+            0% {
+                transform:
+                    translateX(0);
+            }
+
+            100% {
+                transform:
+                    translateX(520px);
+            }
+        }
+
+
+        /* =====================================================
+           WEATHER PARTICLES
+        ===================================================== */
+
+        .weather-particle {
+            position: absolute;
+
+            width: 5px;
+
+            height: 5px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(23, 105, 224, 0.25);
+
+            animation:
+                particleFloat 5s ease-in-out
+                infinite;
+        }
+
+
+        .particle-one {
+            left: 18%;
+
+            top: 25%;
+        }
+
+
+        .particle-two {
+            left: 35%;
+
+            top: 45%;
+
+            animation-delay: 1s;
+        }
+
+
+        .particle-three {
+            left: 70%;
+
+            top: 30%;
+
+            animation-delay: 2s;
+        }
+
+
+        .particle-four {
+            left: 82%;
+
+            top: 55%;
+
+            animation-delay: 3s;
+        }
+
+
+        @keyframes particleFloat {
+
+            0% {
+                transform:
+                    translateY(0);
+
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 0.7;
+            }
+
+            50% {
+                transform:
+                    translateY(-15px);
+
+                opacity: 1;
+            }
+
+            100% {
+                transform:
+                    translateY(-30px);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           WEATHER CONTENT
+        ===================================================== */
+
+        .weather-content {
+            position: relative;
+
+            z-index: 5;
+        }
+
+
+        .weather-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .small-text {
+            font-size: 12px;
+
+            color: #8a97aa;
+
+            margin-bottom: 5px;
+        }
+
+
+        .weather-top h3 {
+            font-size: 19px;
+
+            color: #17233c;
+        }
+
+
+        /* =====================================================
+           WEATHER ICON
+        ===================================================== */
+
+        .weather-icon {
+            width: 65px;
+
+            height: 65px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background: #edf6ff;
+
+            font-size: 35px;
+
+            position: relative;
+
+            z-index: 10;
+
+            animation:
+                weatherIconFloat 3s
+                ease-in-out infinite;
+        }
+
+
+        @keyframes weatherIconFloat {
+
+            0% {
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-7px)
+                    rotate(3deg);
+            }
+
+            100% {
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+            }
+        }
+
+
+        /* =====================================================
+           TEMPERATURE
+        ===================================================== */
+
+        .temperature {
+            font-size: 72px;
+
+            font-weight: 700;
+
+            color: #1769e0;
+
+            line-height: 1;
+
+            margin-top: 25px;
+
+            position: relative;
+
+            z-index: 5;
+
+            animation:
+                temperaturePulse 3s
+                ease-in-out infinite;
+        }
+
+
+        @keyframes temperaturePulse {
+
+            0% {
+                transform:
+                    scale(1);
+
+                text-shadow:
+                    0 0 0
+                    rgba(23, 105, 224, 0);
+            }
+
+            50% {
+                transform:
+                    scale(1.03);
+
+                text-shadow:
+                    0 0 20px
+                    rgba(23, 105, 224, 0.18);
+            }
+
+            100% {
+                transform:
+                    scale(1);
+
+                text-shadow:
+                    0 0 0
+                    rgba(23, 105, 224, 0);
+            }
+        }
+
+
+        .weather-condition {
+            color: #66758b;
+
+            margin-top: 8px;
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           WEATHER INFORMATION
+        ===================================================== */
+
+        .weather-info {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 30px;
+
+            padding-top: 25px;
+
+            border-top:
+                1px solid #e8edf5;
+        }
+
+
+        .weather-info div {
+            text-align: center;
+
+            transition:
+                transform 0.3s ease;
+        }
+
+
+        .weather-info div:hover {
+            transform:
+                translateY(-5px);
+        }
+
+
+        .weather-info span {
+            font-size: 20px;
+
+            display: inline-block;
+
+            animation:
+                infoFloat 3s
+                ease-in-out infinite;
+        }
+
+
+        .weather-info div:nth-child(2)
+        span {
+            animation-delay:
+                0.5s;
+        }
+
+
+        .weather-info div:nth-child(3)
+        span {
+            animation-delay:
+                1s;
+        }
+
+
+        @keyframes infoFloat {
+
+            0% {
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateY(-5px);
+            }
+
+            100% {
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        .weather-info p {
+            color: #8490a2;
+
+            font-size: 11px;
+
+            margin-top: 5px;
+        }
+
+
+        .weather-info strong {
+            display: block;
+
+            color: #253653;
+
+            font-size: 13px;
+
+            margin-top: 3px;
+        }
+
+
+        /* =====================================================
+           SCROLL REVEAL
+        ===================================================== */
+
+        .reveal {
+            opacity: 0;
+
+            transform:
+                translateY(50px);
+
+            transition:
+                opacity 0.8s ease,
+                transform 0.8s ease;
+        }
+
+
+        .reveal.active {
+            opacity: 1;
+
+            transform:
+                translateY(0);
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .features {
+            padding: 100px 8%;
+
+            background: #ffffff;
+        }
+
+
+        .section-heading {
+            text-align: center;
+
+            max-width: 700px;
+
+            margin:
+                0 auto 55px;
+        }
+
+
+        .section-heading p {
+            color: #1769e0;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .section-heading h2 {
+            font-size: 36px;
+
+            color: #17233c;
+
+            margin-bottom: 12px;
+        }
+
+
+        .section-heading span {
+            color: #748197;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           FEATURE CARDS
+        ===================================================== */
+
+        .feature-container {
+            max-width: 1200px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 22px;
+        }
+
+
+        .feature-card {
+            padding: 30px 24px;
+
+            background: #f8fbff;
+
+            border:
+                1px solid #e5edf7;
+
+            border-radius: 16px;
+
+            transition:
+                transform 0.4s ease,
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        /* Card light */
+
+        .feature-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+
+            height: 100px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(23, 105, 224, 0.06);
+
+            top: -50px;
+
+            right: -50px;
+
+            transition:
+                transform 0.5s ease;
+        }
+
+
+        .feature-card:hover::before {
+            transform:
+                scale(2.5);
+        }
+
+
+        .feature-card:hover {
+            transform:
+                translateY(-10px);
+
+            box-shadow:
+                0 20px 40px
+                rgba(31, 73, 125, 0.12);
+
+            border-color:
+                #c9ddf7;
+        }
+
+
+        .feature-icon {
+            width: 55px;
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #e9f4ff;
+
+            border-radius: 15px;
+
+            font-size: 26px;
+
+            margin-bottom: 20px;
+
+            position: relative;
+
+            z-index: 2;
+
+            transition:
+                transform 0.4s ease;
+        }
+
+
+        .feature-card:hover
+        .feature-icon {
+            transform:
+                rotate(8deg)
+                scale(1.1);
+        }
+
+
+        .feature-card h3 {
+            color: #1c2b44;
+
+            font-size: 18px;
+
+            margin-bottom: 10px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .feature-card p {
+            color: #718096;
+
+            font-size: 14px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           HOW IT WORKS
+        ===================================================== */
+
+        .how-section {
+            padding: 100px 8%;
+
+            background: #f5f9ff;
+        }
+
+
+        .steps {
+            max-width: 1000px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 35px;
+        }
+
+
+        .step {
+            text-align: center;
+
+            padding: 30px;
+
+            transition:
+                transform 0.4s ease;
+        }
+
+
+        .step:hover {
+            transform:
+                translateY(-8px);
+        }
+
+
+        .step-number {
+            width: 60px;
+
+            height: 60px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin:
+                0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #1769e0;
+
+            color: #ffffff;
+
+            font-weight: 700;
+
+            font-size: 16px;
+
+            box-shadow:
+                0 8px 20px
+                rgba(23, 105, 224, 0.2);
+
+            transition:
+                transform 0.4s ease,
+                box-shadow 0.4s ease;
+        }
+
+
+        .step:hover
+        .step-number {
+            transform:
+                scale(1.15)
+                rotate(8deg);
+
+            box-shadow:
+                0 12px 30px
+                rgba(23, 105, 224, 0.3);
+        }
+
+
+        .step h3 {
+            font-size: 20px;
+
+            color: #1c2b44;
+
+            margin-bottom: 10px;
+        }
+
+
+        .step p {
+            color: #718096;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           CTA
+        ===================================================== */
+
+        .cta {
+            padding: 80px 8%;
+
+            text-align: center;
+
+            background: #1769e0;
+
+            color: #ffffff;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .cta::before {
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+
+            height: 300px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.08);
+
+            top: -150px;
+
+            left: 10%;
+
+            animation:
+                ctaFloat 7s ease-in-out
+                infinite;
+        }
+
+
+        .cta::after {
+            content: "";
+
+            position: absolute;
+
+            width: 250px;
+
+            height: 250px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.06);
+
+            bottom: -130px;
+
+            right: 10%;
+
+            animation:
+                ctaFloat2 8s ease-in-out
+                infinite;
+        }
+
+
+        @keyframes ctaFloat {
+
+            0% {
+                transform:
+                    translate(0, 0);
+            }
+
+            50% {
+                transform:
+                    translate(50px, 30px);
+            }
+
+            100% {
+                transform:
+                    translate(0, 0);
+            }
+        }
+
+
+        @keyframes ctaFloat2 {
+
+            0% {
+                transform:
+                    translate(0, 0);
+            }
+
+            50% {
+                transform:
+                    translate(-40px, -30px);
+            }
+
+            100% {
+                transform:
+                    translate(0, 0);
+            }
+        }
+
+
+        .cta h2,
+        .cta p,
+        .cta a {
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .cta h2 {
+            font-size: 38px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .cta p {
+            font-size: 16px;
+
+            opacity: 0.9;
+
+            margin-bottom: 25px;
+        }
+
+
+        .cta .primary-btn {
+            background: #ffffff;
+
+            color: #1769e0;
+
+            box-shadow: none;
+        }
+
+
+        .cta .primary-btn:hover {
+            background: #edf5ff;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            padding: 45px 8%;
+
+            text-align: center;
+
+            background: #101b2d;
+
+            color: #ffffff;
+
+            position: relative;
+        }
+
+
+        .footer-logo {
+            font-size: 22px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+            animation:
+                footerFloat 3s ease-in-out
+                infinite;
+        }
+
+
+        @keyframes footerFloat {
+
+            0% {
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateY(-4px);
+            }
+
+            100% {
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        footer p {
+            color: #aab6c8;
+
+            font-size: 14px;
+        }
+
+
+        .copyright {
+            margin-top: 18px;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+
+            .hero {
+                padding: 70px 5%;
+            }
+
+
+            .hero-content {
+                grid-template-columns:
+                    1fr;
+
+                text-align: center;
+
+                gap: 50px;
+            }
+
+
+            .description {
+                margin-left: auto;
+
+                margin-right: auto;
+            }
+
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+
+            .feature-container {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 18px 5%;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+
+            .navbar nav {
+                gap: 18px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+
+            .hero {
+                padding: 60px 5%;
+            }
+
+
+            .hero-text h1 {
+                font-size: 40px;
+            }
+
+
+            .weather-card {
+                width: 100%;
+
+                max-width: 380px;
+            }
+
+
+            .features,
+            .how-section {
+                padding: 70px 5%;
+            }
+
+
+            .section-heading h2 {
+                font-size: 30px;
+            }
+
+
+            .feature-container {
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .steps {
+                grid-template-columns:
+                    1fr;
+
+                gap: 10px;
+            }
+
+
+            .cta {
+                padding: 65px 5%;
+            }
+
+
+            .cta h2 {
+                font-size: 30px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 450px) {
+
+            .navbar nav {
+                gap: 12px;
+            }
+
+
+            .navbar nav a {
+                font-size: 13px;
+            }
+
+
+            .hero-text h1 {
+                font-size: 34px;
+            }
+
+
+            .temperature {
+                font-size: 60px;
+            }
+
+
+            .weather-info {
+                gap: 5px;
+            }
+
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+        ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration:
+                    0.01ms !important;
+
+                animation-iteration-count:
+                    1 !important;
+
+                scroll-behavior:
+                    auto !important;
+
+                transition-duration:
+                    0.01ms !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         PAGE LOADER
+    ===================================================== -->
+
+    <div class="page-loader">
+
+        <div class="loader-content">
+
+            <div class="loader-icon">
+                🌦️
+            </div>
+
+            <div class="loader-text">
+                Meghdrsti
+            </div>
+
+            <div class="loader-line"></div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ===================================================== -->
+
+    <header class="navbar">
+
+        <div class="logo">
+
+            🌦️
+
+            <span>
+                Meghdrsti
+            </span>
+
+        </div>
+
+
+        <nav>
+
+            <a
+                href="index.html"
+                class="active"
+            >
+                Home
+            </a>
+
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+
+            <a href="{% url 'signup' %}">
+                Sign Up
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+
+            <!-- HERO TEXT -->
+
+            <div class="hero-text">
+
+                <p class="tagline">
+
+                    🌍 SMART WEATHER • SMART ALERTS
+
+                </p>
+
+
+                <h1>
+
+                    Weather Information
+
+                    <span>
+                        You Can Understand
+                    </span>
+
+                </h1>
+
+
+                <p class="description">
+
+                    Meghdrsti is an AI-powered weather and disaster
+                    alert platform that provides simple,
+                    understandable and location-based weather
+                    information.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 WEATHER CARD
+            ================================================= -->
+
+            <div class="weather-preview">
+
+
+                <div class="weather-card">
+
+
+                    <!-- WEATHER EFFECT -->
+
+                    <div class="weather-effect">
+
+
+                        <div class="sun-effect"></div>
+
+
+                        <div
+                            class="floating-cloud cloud-one">
+                        </div>
+
+
+                        <div
+                            class="floating-cloud cloud-two">
+                        </div>
+
+
+                        <div
+                            class="weather-particle particle-one">
+                        </div>
+
+
+                        <div
+                            class="weather-particle particle-two">
+                        </div>
+
+
+                        <div
+                            class="weather-particle particle-three">
+                        </div>
+
+
+                        <div
+                            class="weather-particle particle-four">
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- WEATHER CONTENT -->
+
+                    <div class="weather-content">
+
+
+                        <div class="weather-top">
+
+
+                            <div>
+
+                                <p class="small-text">
+                                    Current Weather
+                                </p>
+
+
+                                <h3>
+                                    📍 Dhanbad
+                                </h3>
+
+                            </div>
+
+
+                            <div class="weather-icon">
+
+                                ⛅
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="temperature">
+
+                            28°
+
+                        </div>
+
+
+                        <p class="weather-condition">
+
+                            Partly Cloudy
+
+                        </p>
+
+
+
+                        <div class="weather-info">
+
+
+                            <div>
+
+                                <span>
+                                    💧
+                                </span>
+
+
+                                <p>
+                                    Humidity
+                                </p>
+
+
+                                <strong>
+                                    72%
+                                </strong>
+
+                            </div>
+
+
+
+                            <div>
+
+                                <span>
+                                    💨
+                                </span>
+
+
+                                <p>
+                                    Wind
+                                </p>
+
+
+                                <strong>
+                                    14 km/h
+                                </strong>
+
+                            </div>
+
+
+
+                            <div>
+
+                                <span>
+                                    🌧️
+                                </span>
+
+
+                                <p>
+                                    Rain
+                                </p>
+
+
+                                <strong>
+                                    Possible
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FEATURES
+    ===================================================== -->
+
+    <section class="features">
+
+
+        <div class="section-heading reveal">
+
+            <p>
+                WHY MEGHDRSTI?
+            </p>
+
+
+            <h2>
+                Weather Alerts Made Simple
+            </h2>
+
+
+            <span>
+
+                Ask questions, understand weather and receive
+                important disaster alerts.
+
+            </span>
+
+        </div>
+
+
+
+        <div class="feature-container">
+
+
+            <div
+                class="feature-card reveal"
+                style="transition-delay: 0.1s;"
+            >
+
+                <div class="feature-icon">
+                    🌦️
+                </div>
+
+
+                <h3>
+                    Weather Forecast
+                </h3>
+
+
+                <p>
+
+                    Get simple and easy-to-understand information
+                    about current weather and upcoming forecasts.
+
+                </p>
+
+            </div>
+
+
+
+            <div
+                class="feature-card reveal"
+                style="transition-delay: 0.2s;"
+            >
+
+                <div class="feature-icon">
+                    🚨
+                </div>
+
+
+                <h3>
+                    Disaster Alerts
+                </h3>
+
+
+                <p>
+
+                    Receive important warnings for heavy rain,
+                    floods, cyclones and other weather-related
+                    disasters.
+
+                </p>
+
+            </div>
+
+
+
+            <div
+                class="feature-card reveal"
+                style="transition-delay: 0.3s;"
+            >
+
+                <div class="feature-icon">
+                    🤖
+                </div>
+
+
+                <h3>
+                    AI Weather Assistant
+                </h3>
+
+
+                <p>
+
+                    Ask weather-related questions and get simple
+                    answers through an AI-powered assistant.
+
+                </p>
+
+            </div>
+
+
+
+            <div
+                class="feature-card reveal"
+                style="transition-delay: 0.4s;"
+            >
+
+                <div class="feature-icon">
+                    🌐
+                </div>
+
+
+                <h3>
+                    Easy to Understand
+                </h3>
+
+
+                <p>
+
+                    Weather information can be presented in simple
+                    language so that more people can understand it.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HOW IT WORKS
+    ===================================================== -->
+
+    <section class="how-section">
+
+
+        <div class="section-heading reveal">
+
+            <p>
+                HOW IT WORKS
+            </p>
+
+
+            <h2>
+                Ask. Understand. Stay Safe.
+            </h2>
+
+        </div>
+
+
+
+        <div class="steps">
+
+
+            <div
+                class="step reveal"
+                style="transition-delay: 0.1s;"
+            >
+
+                <div class="step-number">
+                    01
+                </div>
+
+
+                <h3>
+                    Ask
+                </h3>
+
+
+                <p>
+
+                    Ask Meghdrsti about today's weather,
+                    rain, temperature or forecast.
+
+                </p>
+
+            </div>
+
+
+
+            <div
+                class="step reveal"
+                style="transition-delay: 0.2s;"
+            >
+
+                <div class="step-number">
+                    02
+                </div>
+
+
+                <h3>
+                    Understand
+                </h3>
+
+
+                <p>
+
+                    Receive weather information in simple
+                    and understandable language.
+
+                </p>
+
+            </div>
+
+
+
+            <div
+                class="step reveal"
+                style="transition-delay: 0.3s;"
+            >
+
+                <div class="step-number">
+                    03
+                </div>
+
+
+                <h3>
+                    Stay Safe
+                </h3>
+
+
+                <p>
+
+                    Get important alerts about severe weather
+                    and possible disasters.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CTA
+    ===================================================== -->
+
+    <section class="cta">
+
+
+        <h2>
+            Stay Updated. Stay Prepared.
+        </h2>
+
+
+        <p>
+
+            Get weather information and disaster alerts
+            with Meghdrsti.
+
+        </p>
+
+
+        <a
+            href="signup.html"
+            class="btn primary-btn"
+        >
+
+            Create Account →
+
+        </a>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+
+
+        <div class="footer-logo">
+
+            🌦️ Meghdrsti
+
+        </div>
+
+
+        <p>
+
+            Smart Weather & Disaster Alert Platform
+
+        </p>
+
+
+        <p class="copyright">
+
+            © 2026 Meghdrsti. All rights reserved.
+
+        </p>
+
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
+
+    <script>
+
+        /* =================================================
+           SCROLL REVEAL
+        ================================================= */
+
+        const revealElements =
+            document.querySelectorAll(".reveal");
+
+
+        const revealObserver =
+            new IntersectionObserver(
+
+                (entries) => {
+
+                    entries.forEach(
+                        (entry) => {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                entry.target
+                                    .classList
+                                    .add("active");
+
+                            }
+
+                        }
+                    );
+
+                },
+
+                {
+                    threshold: 0.15
+                }
+
+            );
+
+
+        revealElements.forEach(
+            (element) => {
+
+                revealObserver.observe(
+                    element
+                );
+
+            }
+        );
+
+
+
+        /* =================================================
+           MOUSE PARALLAX FOR WEATHER CARD
+        ================================================= */
+
+        const weatherCard =
+            document.querySelector(
+                ".weather-card"
+            );
+
+
+        const weatherPreview =
+            document.querySelector(
+                ".weather-preview"
+            );
+
+
+        if (
+            weatherCard &&
+            weatherPreview
+        ) {
+
+            weatherPreview.addEventListener(
+                "mousemove",
+                function(event) {
+
+                    const rect =
+                        weatherCard
+                            .getBoundingClientRect();
+
+
+                    const x =
+                        event.clientX -
+                        rect.left;
+
+
+                    const y =
+                        event.clientY -
+                        rect.top;
+
+
+                    const centerX =
+                        rect.width / 2;
+
+
+                    const centerY =
+                        rect.height / 2;
+
+
+                    const rotateY =
+                        ((x - centerX) /
+                        centerX) * 4;
+
+
+                    const rotateX =
+                        ((centerY - y) /
+                        centerY) * 4;
+
+
+                    weatherCard.style.transform =
+                        `perspective(800px)
+                         rotateX(${rotateX}deg)
+                         rotateY(${rotateY}deg)
+                         translateY(-5px)`;
+
+                }
+            );
+
+
+            weatherPreview.addEventListener(
+                "mouseleave",
+                function() {
+
+                    weatherCard.style.transform =
+                        "";
+
+                }
+            );
+
+        }
+
+
+
+        /* =================================================
+           BUTTON CLICK RIPPLE
+        ================================================= */
+
+        const buttons =
+            document.querySelectorAll(
+                ".btn"
+            );
+
+
+        buttons.forEach(
+            (button) => {
+
+                button.addEventListener(
+                    "click",
+                    function(event) {
+
+                        const ripple =
+                            document.createElement(
+                                "span"
+                            );
+
+
+                        const rect =
+                            button
+                                .getBoundingClientRect();
+
+
+                        const size =
+                            Math.max(
+                                rect.width,
+                                rect.height
+                            );
+
+
+                        ripple.style.position =
+                            "absolute";
+
+
+                        ripple.style.width =
+                            size + "px";
+
+
+                        ripple.style.height =
+                            size + "px";
+
+
+                        ripple.style.left =
+                            (
+                                event.clientX -
+                                rect.left -
+                                size / 2
+                            ) + "px";
+
+
+                        ripple.style.top =
+                            (
+                                event.clientY -
+                                rect.top -
+                                size / 2
+                            ) + "px";
+
+
+                        ripple.style.borderRadius =
+                            "50%";
+
+
+                        ripple.style.background =
+                            "rgba(255,255,255,0.3)";
+
+
+                        ripple.style.transform =
+                            "scale(0)";
+
+
+                        ripple.style.pointerEvents =
+                            "none";
+
+
+                        ripple.style.position =
+                            "absolute";
+
+
+                        ripple.style.animation =
+                            "rippleEffect 0.6s linear";
+
+
+                        button.style.position =
+                            "relative";
+
+
+                        button.style.overflow =
+                            "hidden";
+
+
+                        button.appendChild(
+                            ripple
+                        );
+
+
+                        setTimeout(
+                            () => {
+
+                                ripple.remove();
+
+                            },
+                            600
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =================================================
+           RIPPLE ANIMATION
+        ================================================= */
+
+        const rippleStyle =
+            document.createElement(
+                "style"
+            );
+
+
+        rippleStyle.innerHTML = `
+
+            @keyframes rippleEffect {
+
+                to {
+
+                    transform:
+                        scale(4);
+
+                    opacity: 0;
+
+                }
+
+            }
+
+        `;
+
+
+        document.head.appendChild(
+            rippleStyle
+        );
+
+
+
+        /* =================================================
+           NAVBAR SCROLL EFFECT
+        ================================================= */
+
+        const navbar =
+            document.querySelector(
+                ".navbar"
+            );
+
+
+        window.addEventListener(
+            "scroll",
+            function() {
+
+                if (
+                    window.scrollY > 30
+                ) {
+
+                    navbar.style.boxShadow =
+                        "0 8px 30px rgba(23,105,224,0.08)";
+
+                } else {
+
+                    navbar.style.boxShadow =
+                        "none";
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>
